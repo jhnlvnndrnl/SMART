@@ -1,12 +1,15 @@
-A hackathon project focused on **smart agriculture**. It helps farmers monitor crop health, detect diseases, and predict crop yield using AI and web technologies.
+# SMART – Sustainable Monitoring and Agricultural Resource Technology
+
+A hackathon project focused on **smart agriculture**. SMART helps farmers monitor crop health, control environmental conditions with IoT devices, and predict crop yield using AI and web technologies.
 
 ---
 
 ## Features
-- **Dashboard UI** – Visualize crop health and soil data  
-- **Crop Disease Detection API** – Identify crop diseases using AI  
-- **User Authentication** – Secure login and signup  
+- **Dashboard UI** – Visualize crop health, soil data, and IoT readings  
+- **IoT Integration** – Monitor temperature, humidity, and soil conditions in real-time  
+- **Crop Disease Detection** – Identify crop diseases using AI  
 - **AI Prediction** – Estimate crop yield based on collected data  
+- **User Authentication** – Secure login and signup  
 
 ---
 
@@ -18,14 +21,14 @@ A hackathon project focused on **smart agriculture**. It helps farmers monitor c
 ---
 
 ## Tech Stack
-- **Frontend:**
-- **Backend:** 
-- **Database:**  
-- **AI/ML:** 
+- **IoT:** Real-time sensor monitoring for crops  
+- **Unity:** Gamified 2D/3D simulation for farm management  
+- **Backend/Database:** Supabase  
+- **Automation:** N8n for workflow automation  
 
 ---
 
 ## How to Run
 1. Clone the repository:  
 ```bash
-git clone https://github.com/jhnlvnndrnl/The-Innovation-Lab
+git clone https://github.com/jhnlvnndrnl/SMART
