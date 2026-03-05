@@ -1,11 +1,10 @@
 using UnityEngine;
 
-public class PlayerMovement2D : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed;
-
+    public float speed = 4f;
+    public joystick Joystick;
     private Rigidbody2D rb;
-    private Vector2 movement;
 
     void Start()
     {
@@ -14,12 +13,7 @@ public class PlayerMovement2D : MonoBehaviour
 
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal"); // A/D
-        movement.y = Input.GetAxisRaw("Vertical");   // W/S
-    }
-
-    void FixedUpdate()
-    {
-        rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
+        Vector2 move = new Vector2(Joystick.Horizontal, Joystick.Vertical);
+        rb.velocity = move * speed;
     }
 }
