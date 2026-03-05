@@ -14,6 +14,6 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Vector2 move = new Vector2(Joystick.Horizontal, Joystick.Vertical);
-        rb.velocity = move * speed;
+        rb.linearVelocity = move * speed;
     }
 }
