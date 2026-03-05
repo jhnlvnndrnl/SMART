@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class joystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
+public class Joystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
     public RectTransform background;
     public RectTransform handle;
