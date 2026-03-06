@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 4f;
-    public joystick Joystick;
+    public Joystick joystick;
     private Rigidbody2D rb;
 
     void Start()
@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Vector2 move = new Vector2(Joystick.Horizontal, Joystick.Vertical);
-        rb.velocity = move * speed;
+        Vector2 move = new Vector2(joystick.Horizontal, joystick.Vertical);
+        rb.linearVelocity = move * speed;
     }
 }
