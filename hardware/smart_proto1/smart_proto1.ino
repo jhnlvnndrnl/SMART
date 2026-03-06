@@ -150,6 +150,10 @@ void setup() {
   
   Serial.begin(9600);
   matrix.begin();
+  pinMode(1,OUTPUT);
+  pinMode(2,OUTPUT);
+  pinMode(3,OUTPUT);
+  pinMode(4,OUTPUT);
   
   // -- WIFI SETUP
     matrix.renderBitmap(phase_wifi_connecting, 8, 12); 
@@ -185,17 +189,30 @@ void setup() {
 
 
 void loop() {
+  
+  digitalWrite(1, LOW);
+  digitalWrite(2, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
+
     matrix.renderBitmap(tick_1, 8, 12); 
+    digitalWrite(1, HIGH);
   get_door();
     matrix.renderBitmap(tick_2, 8, 12); 
+    digitalWrite(2, HIGH);
+                Serial.println("   --"+ String(door));
 
   if(door == "true"){
     dht11();
     soil_sensor();
-      matrix.renderBitmap(tick_3, 8, 12);
+      matrix.renderBitmap(tick_3, 8, 12); 
+      digitalWrite(3, HIGH);
+
     upload_db();
-      matrix.renderBitmap(tick_4, 8, 12);
-      close_door();
+      matrix.renderBitmap(tick_4, 8, 12); 
+      digitalWrite(4, HIGH);
+    
+      // close_door();
   }
   delay(5000);
 }
