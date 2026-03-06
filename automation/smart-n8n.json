@@ -1,0 +1,193 @@
+{
+  "name": "smart-n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sensor-updates",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "31cb6abe-8fdc-4001-bf08-880f03bfcac5",
+      "name": "Webhook",
+      "webhookId": "0defd033-f62b-4a68-b228-f2c3519ebb85"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── 0. EXTRACT BODY ──────────────────────────────────────────\nconst input = $('Webhook').first().json.body;\n\n// ── 1. GET WEATHER FROM PREVIOUS NODE ────────────────────────\nconst weatherCode      = $input.first().json.current?.weathercode ?? null;\n\nfunction decodeWeatherCode(code) {\n  if (code === 0)  return \"Clear\";\n  if (code <= 2)   return \"Partly Cloudy\";\n  if (code === 3)  return \"Overcast\";\n  if (code <= 49)  return \"Foggy\";\n  if (code <= 59)  return \"Drizzle\";\n  if (code <= 69)  return \"Rainy\";\n  if (code <= 79)  return \"Snowy\";\n  if (code <= 84)  return \"Rain Showers\";\n  if (code <= 94)  return \"Thunderstorm\";\n  return \"Severe Thunderstorm\";\n}\n\nconst weatherCondition = weatherCode !== null ? decodeWeatherCode(weatherCode) : \"Unknown\";\n\n// ── 2. EXPERT RULES ──────────────────────────────────────────\nfunction evaluateSoilMeter(v) {\n  if (v === null || v === undefined || isNaN(v)) return { status: \"MISSING\", alert: \"No soil moisture data received.\" };\n  v = parseFloat(v);\n  if (v < 40) return { status: \"CRITICAL\", alert: \"Soil too dry — trigger irrigation alert.\" };\n  if (v > 70) return { status: \"CRITICAL\", alert: \"Soil too wet — risk of root disease.\" };\n  return { status: \"OPTIMAL\", alert: null };\n}\n\nfunction evaluateTemperature(v) {\n  if (v === null || v === undefined || isNaN(v)) return { status: \"MISSING\", alert: \"No temperature data received.\" };\n  v = parseFloat(v);\n  if (v < 20) return { status: \"WARNING\", alert: \"Temperature too low — slow crop growth.\" };\n  if (v > 33) return { status: \"CRITICAL\", alert: \"Temperature too high — heat stress.\" };\n  return { status: \"OPTIMAL\", alert: null };\n}\n\nfunction evaluateHumidity(v) {\n  if (v === null || v === undefined || isNaN(v)) return { status: \"MISSING\", alert: \"No humidity data received.\" };\n  v = parseFloat(v);\n  if (v > 85) return { status: \"CRITICAL\", alert: \"Humidity too high — risk of fungal infection.\" };\n  if (v < 50) return { status: \"WARNING\", alert: \"Humidity too low — plant dehydration.\" };\n  return { status: \"OPTIMAL\", alert: null };\n}\n\n// ── 3. MAP INPUT KEYS ─────────────────────────────────────────\nconst rawSoilMeter = input.soil_meter  ?? input.moisture ?? null;\nconst rawTemp      = input.temperature ?? input.temp     ?? null;\nconst rawHumidity  = input.humidity    ?? input.hum      ?? null;\n\n// ── 4. RUN EVALUATIONS ────────────────────────────────────────\nconst soilResult     = evaluateSoilMeter(rawSoilMeter);\nconst tempResult     = evaluateTemperature(rawTemp);\nconst humidityResult = evaluateHumidity(rawHumidity);\n\n// ── 5. OVERALL STATUS ─────────────────────────────────────────\nconst severityMap = { OPTIMAL: 0, WARNING: 1, CRITICAL: 2, MISSING: 3 };\nconst maxSeverity = Math.max(\n  severityMap[soilResult.status],\n  severityMap[tempResult.status],\n  severityMap[humidityResult.status]\n);\n\nconst overallStatus =\n  maxSeverity === 0 ? \"OPTIMAL\" :\n  maxSeverity === 1 ? \"WARNING\" :\n  maxSeverity === 2 ? \"CRITICAL\" : \"INCOMPLETE\";\n\nconst alerts = [soilResult.alert, tempResult.alert, humidityResult.alert]\n  .filter(Boolean)\n  .join(\" | \");\n\nconst timestamp = new Date().toISOString();\n\n// ── 6. TWO SEPARATE OUTPUT ITEMS ─────────────────────────────\nreturn [\n  {\n    json: {\n      soil_meter:      rawSoilMeter !== null ? parseFloat(rawSoilMeter) : null,\n      humidity:        rawHumidity  !== null ? parseFloat(rawHumidity)  : null,\n      temperature:     rawTemp      !== null ? parseFloat(rawTemp)      : null,\n      created_at:      timestamp,\n      _overall_status: overallStatus,\n      _alert: alerts.length > 0 ? alerts : null,\n      _weather:        weatherCondition,\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        384,
+        0
+      ],
+      "id": "11090884-50f5-4bfa-ba16-07fb4e40fcdc",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=14.1648&longitude=121.2414&current=weathercode&timezone=Asia%2FManila",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        192,
+        0
+      ],
+      "id": "29284d36-8980-4a6a-ac85-20f62c873f83",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "tableId": "algo",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "overall_status",
+              "fieldValue": "={{ $('Code in JavaScript').first().json._overall_status }}"
+            },
+            {
+              "fieldId": "alert",
+              "fieldValue": "={{ $('Code in JavaScript').first().json._alert }}"
+            },
+            {
+              "fieldId": "weather",
+              "fieldValue": "={{ $('Code in JavaScript').first().json._weather }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            },
+            {
+              "fieldId": "id",
+              "fieldValue": "={{ $('soil table').first().json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        768,
+        0
+      ],
+      "id": "ef42e4d1-9a0f-4db0-aa2c-97fc8539b93c",
+      "name": "algo table",
+      "credentials": {
+        "supabaseApi": {
+          "id": "p23TzpCbR5y9p0rX",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "soil",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "soil_meter",
+              "fieldValue": "={{ $json.soil_meter }}"
+            },
+            {
+              "fieldId": "humidity",
+              "fieldValue": "={{ $json.humidity }}"
+            },
+            {
+              "fieldId": "temperature",
+              "fieldValue": "={{ $json.temperature }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        576,
+        0
+      ],
+      "id": "bc16505c-757d-4d89-8531-f9c8d7fbf734",
+      "name": "soil table",
+      "credentials": {
+        "supabaseApi": {
+          "id": "p23TzpCbR5y9p0rX",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "soil table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "soil table": {
+      "main": [
+        [
+          {
+            "node": "algo table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "95c17251-e065-4890-9157-5fd4643f6eeb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1cea366b82ba0ad369b48230cf8530fa13f14bfa6b147886ae4f34def2cf6dd2"
+  },
+  "id": "cQk994F7HQb5ACk7",
+  "tags": []
+}
