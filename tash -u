@@ -1,0 +1,30 @@
+[33m5236cd6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature[m[33m, [m[1;31morigin/feature[m[33m)[m HEAD@{0}: checkout: moving from main to feature
+[33mb99ce36[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{1}: pull: Fast-forward
+[33mb2275d1[m HEAD@{2}: checkout: moving from feature to main
+[33m5236cd6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature[m[33m, [m[1;31morigin/feature[m[33m)[m HEAD@{3}: checkout: moving from feature to feature
+[33m5236cd6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature[m[33m, [m[1;31morigin/feature[m[33m)[m HEAD@{4}: commit: feature/palay button
+[33m8290f71[m HEAD@{5}: commit: PauseButtonFeature
+[33m5e4d6db[m HEAD@{6}: commit: merge
+[33m7521bef[m HEAD@{7}: pull origin main: Fast-forward
+[33mbd5c208[m HEAD@{8}: commit: PauseFeature
+[33m534c7a4[m HEAD@{9}: commit: JOYSTICKFIX
+[33m25f4e69[m HEAD@{10}: commit: fix
+[33m2369f82[m HEAD@{11}: pull origin main: Fast-forward
+[33m5c33d99[m HEAD@{12}: commit (merge): joystickupdate
+[33m6043a1c[m HEAD@{13}: commit: joystickFeature
+[33m82fe8c6[m HEAD@{14}: commit: cinemachineFeature
+[33m12ba5c4[m[33m ([m[1;31morigin/test[m[33m, [m[1;32mtest[m[33m)[m HEAD@{15}: checkout: moving from test to feature
+[33m12ba5c4[m[33m ([m[1;31morigin/test[m[33m, [m[1;32mtest[m[33m)[m HEAD@{16}: merge origin/main: Fast-forward
+[33m226087d[m[33m ([m[1;31morigin/recover-work[m[33m)[m HEAD@{17}: checkout: moving from main to test
+[33mb2275d1[m HEAD@{18}: checkout: moving from test to main
+[33m226087d[m[33m ([m[1;31morigin/recover-work[m[33m)[m HEAD@{19}: merge latrell: Fast-forward
+[33md9efee7[m HEAD@{20}: checkout: moving from test to test
+[33md9efee7[m HEAD@{21}: checkout: moving from recover-work to test
+[33m226087d[m[33m ([m[1;31morigin/recover-work[m[33m)[m HEAD@{22}: checkout: moving from 226087da47f4d7ca0456999af6f16ab080080989 to recover-work
+[33m226087d[m[33m ([m[1;31morigin/recover-work[m[33m)[m HEAD@{23}: checkout: moving from test to 226087d
+[33md9efee7[m HEAD@{24}: reset: moving to HEAD
+[33md9efee7[m HEAD@{25}: checkout: moving from latrell to test
+[33m226087d[m[33m ([m[1;31morigin/recover-work[m[33m)[m HEAD@{26}: commit: WIP: my changes
+[33m1d88e2a[m[33m ([m[1;31morigin/latrell[m[33m)[m HEAD@{27}: commit: update
+[33mb2275d1[m HEAD@{28}: checkout: moving from main to latrell
+[33mb2275d1[m HEAD@{29}: clone: from https://github.com/jhnlvnndrnl/SMART.git
