@@ -12,14 +12,6 @@
 
 */
 
-
-
-
-
-
-
-
-
 // WIFI
 #include <WiFiS3.h>
 const char* ssid = "azk4";
@@ -36,11 +28,9 @@ DHT dht(DHTPIN, DHTTYPE);
 // SOIL SENSOR
 int sensorPin = A0;
 
-
 // DOT MATRIX
 #include "Arduino_LED_Matrix.h"
 ArduinoLEDMatrix matrix;
-
 
 // VARIABLE
 float humidity = 0.0;
@@ -137,15 +127,6 @@ uint8_t tick_4[8][12] = {
 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} 
 };
 
-
-
-
-
-
-
-
-
-
 void setup() {
   
   Serial.begin(9600);
@@ -172,18 +153,6 @@ void setup() {
   delay(3000);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 void loop() {
     matrix.renderBitmap(tick_1, 8, 12); 
   get_door();
@@ -199,7 +168,6 @@ void loop() {
   }
   delay(5000);
 }
-
 
 
 // ------------------------------------   METHODS   ------------------------------------
@@ -331,18 +299,3 @@ void soil_sensor(){
   Serial.print("soil_moist : ");
   Serial.println(sensorValue);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
