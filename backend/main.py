@@ -18,7 +18,7 @@ app.add_middleware(
 
 SUPABASE_URL: str = os.getenv("SUPABASE_URL")
 SUPABASE_KEY: str = os.getenv("SUPABASE_KEY")
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
 # latest
@@ -68,6 +68,9 @@ def get_latest_status():
             .order("created_at", desc=True) \
             .limit(1) \
             .execute()
+        
+
+        print("Status data from Supabase:", res.data) 
 
         if not res.data:
             raise HTTPException(status_code=404, detail="No status data found.")

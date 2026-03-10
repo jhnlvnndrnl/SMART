@@ -5,6 +5,7 @@ public class TileClick : MonoBehaviour
 {
     public Tilemap tilemap;      
     public GameObject dialogue; 
+    public GameObject sensortext;
 
     void Update()
     {
@@ -13,6 +14,11 @@ public class TileClick : MonoBehaviour
         {
             if (dialogue != null)
                 dialogue.SetActive(false); // hide dialogue
+
+            if (sensortext != null)
+                sensortext.SetActive(false);
+
+            
         }
 
         // Mouse click
@@ -28,6 +34,9 @@ public class TileClick : MonoBehaviour
             {
                 if (dialogue != null)
                     dialogue.SetActive(true);
+
+                if (sensortext != null)
+                    sensortext.SetActive(true);
             }
         }
     }
