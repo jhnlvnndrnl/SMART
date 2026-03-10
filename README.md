@@ -121,6 +121,9 @@ Unity provides the user interface where farmers can monitor farm conditions and 
 # Contact  
   
 For questions, collaboration, or feedback about the SMART project, you may contact the project maintainer.  
-  
-**Elvin Endrenal**  
+
+```
+John Elvin Endrenal
 GitHub: https://github.com/jhnlvnndrnl
+Email: jeendrenal.dev@gmail.com
+```
